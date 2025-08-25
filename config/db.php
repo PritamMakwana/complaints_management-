@@ -10,4 +10,5 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-?>
+$home = __DIR__;
+$user_id = 1;

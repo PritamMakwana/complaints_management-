@@ -7,6 +7,7 @@
     <title>Complaint Management Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../assets/styles.css" rel="stylesheet">
 </head>
 
 <body>
@@ -18,7 +19,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <!-- Role-based links can be added here -->
+                    <li>
+                        <a class="nav-link" href="../receptionist/complaint_entry.php">New Complaint</a>
+                    </li>
                 </ul>
             </div>
         </div>
