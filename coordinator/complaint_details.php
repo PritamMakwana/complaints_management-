@@ -1,16 +1,16 @@
 <?php
 // complaint_detail.php - Phase 2: Detailed View for Coordinator
 
-include '/config/db.php';
+include  __DIR__ . '/../config/db.php';
 session_start();
-if ($_SESSION['role'] !== 'coordinator') {
-    header('Location: login.php');
-    exit;
-}
+// if ($_SESSION['role'] !== 'coordinator') {
+//     header('Location: login.php');
+//     exit;
+// }
 
 $id = $_GET['id'] ?? 0;
 if (!$id) {
-    header('Location: /coordinator/coordinator_dashboard.php');
+    header('Location: ../coordinator/dashboard.php');
     exit;
 }
 
@@ -25,7 +25,7 @@ $complaint_stmt->execute([$id]);
 $complaint = $complaint_stmt->fetch();
 
 if (!$complaint) {
-    header('Location: /coordinator/coordinator_dashboard.php');
+    header('Location: ../coordinator/dashboard.php');
     exit;
 }
 
@@ -34,8 +34,8 @@ $sp_stmt = $pdo->query("SELECT id, name FROM service_persons WHERE is_available 
 $service_persons = $sp_stmt->fetchAll();
 
 // Fetch spare parts coordinators (users with role)
-$spc_stmt = $pdo->query("SELECT id, name FROM users WHERE role = 'spare_parts_coordinator'");
-$sp_coords = $spc_stmt->fetchAll();
+// $spc_stmt = $pdo->query("SELECT id, name FROM users WHERE role = 'spare_parts_coordinator'");
+// $sp_coords = $spc_stmt->fetchAll();
 
 // Fetch existing spare parts
 $spare_stmt = $pdo->prepare("SELECT * FROM spare_parts_list WHERE complaint_id = ?");
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = 'Assigned to Coordinator'; // Default
     if ($service_person_id) $status = 'Assigned to Service Person';
     $update_comp = $pdo->prepare("UPDATE complaints SET coordinator_user_id = ?, service_person_id = ?, spare_parts_coordinator_user_id = ?, status = ? WHERE id = ?");
-    $update_comp->execute([$_SESSION['user_id'], $service_person_id, $sp_coord_id, $status, $id]);
+    $update_comp->execute([$user_id, $service_person_id, $sp_coord_id, $status, $id]);
 
     // Spare parts
     $delete_sp = $pdo->prepare("DELETE FROM spare_parts_list WHERE complaint_id = ?");
@@ -87,12 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    header('Location: /coordinator/coordinator_dashboard.php');
+    header('Location: ../coordinator/dashboard.php');
     exit;
 }
 ?>
 
-<?php include '/includes/header.php'; ?>
+<?php include  __DIR__ . '/../includes/header.php'; ?>
 <h2>Complaint Detail - ID: <?= $id ?></h2>
 <form method="POST" class="card p-4">
     <!-- Display receptionist details -->
@@ -187,9 +187,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endforeach; ?>
     </div>
-    <button type="button" id="add-part" class="btn btn-secondary mb-3"><i class="material-icons">add</i> Add Part</button>
+    <button type="button" id="add-part" class="btn btn-secondary mb-3 btn-ui"><i class="material-icons me-2">add</i> Add Part</button>
 
-    <button type="submit" class="btn btn-primary"><i class="material-icons">save</i> Save</button>
+    <button type="submit" class="btn btn-primary btn-ui"><i class="material-icons me-2">save</i> Save</button>
 </form>
 
 <script>
@@ -217,4 +217,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     });
 </script>
-<?php include '/includes/footer.php'; ?>
+<?php include  __DIR__ . '/../includes/footer.php'; ?>

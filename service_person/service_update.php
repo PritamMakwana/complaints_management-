@@ -1,16 +1,15 @@
 
 <?php
 // service_update.php - Phase 4: Update for Service Person
-include '/config/db.php';
+include __DIR__ . '/../config/db.php';
 session_start();
-if ($_SESSION['role'] !== 'service_person') {
-    header('Location: login.php');
-    exit;
-}
-
+// if ($_SESSION['role'] !== 'service_person') {
+//     header('Location: login.php');
+//     exit;
+// }
 $id = $_GET['id'] ?? 0;
 if (!$id) {
-    header('Location: service_person_dashboard.php');
+    header('Location: ../service_person/dashboard.php');
     exit;
 }
 
@@ -23,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Update service person availability if needed
 
-    header('Location: service_person_dashboard.php');
+    header('Location: ../service_person/dashboard.php');
     exit;
 }
 ?>
 
-<?php include '/includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 <h2>Close Complaint - ID: <?= $id ?></h2>
 <form method="POST" class="card p-4">
     <div class="mb-3">
@@ -37,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="Service Fulfilled">Service Fulfilled</option>
             <option value="Warranty Expired">Warranty Expired</option>
             <option value="Customer Unreachable">Customer Unreachable</option>
+             <option value="Note">Note</option>
         </select>
     </div>
     <div class="mb-3">
@@ -45,4 +45,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <button type="submit" class="btn btn-primary"><i class="material-icons">check</i> Close</button>
 </form>
-<?php include '/includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

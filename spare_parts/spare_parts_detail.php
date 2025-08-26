@@ -1,15 +1,15 @@
 <?php
 // spare_parts_detail.php - Phase 3: Detailed View for Spare Parts
-include '/config/db.php';
+include __DIR__ . '/../config/db.php';
 session_start();
-if ($_SESSION['role'] !== 'spare_parts_coordinator') {
-    header('Location: login.php');
-    exit;
-}
+// if ($_SESSION['role'] !== 'spare_parts_coordinator') {
+//     header('Location: login.php');
+//     exit;
+// }
 
 $id = $_GET['id'] ?? 0;
 if (!$id) {
-    header('Location: spare_parts_dashboard.php');
+    header('Location: ../spare_parts/dashboard.php');
     exit;
 }
 
@@ -23,12 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update = $pdo->prepare("UPDATE spare_parts_list SET status = ?, courier_details = ? WHERE id = ?");
         $update->execute([$status, $courier, $part_id]);
     }
-    header('Location: /spare_parts/dashboard.php');
+    header('Location: ../spare_parts/dashboard.php');
     exit;
 }
 ?>
 
-<?php include '/includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 <h2>Update Spare Parts - Complaint ID: <?= $id ?></h2>
 <form method="POST" class="card p-4">
     <?php foreach ($spare_parts as $part): ?>
@@ -48,4 +48,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endforeach; ?>
     <button type="submit" class="btn btn-primary"><i class="material-icons">save</i> Update</button>
 </form>
-<?php include '/includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
