@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/config/db.php';
+include __DIR__ . '/../config/db.php';
 session_start();
 // if (!in_array($_SESSION['role'], ['admin', 'coordinator'])) {
 //     header('Location: login.php');
@@ -109,7 +109,7 @@ if ($complaint_id && $service_person_id) {
 
 ?>
 
-<?php include __DIR__ . '/includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 <!-- Add DataTables and Chart.js CSS/JS -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
@@ -122,8 +122,8 @@ if ($complaint_id && $service_person_id) {
         <div class="input-group">
             <span class="input-group-text"><i class="material-icons">search</i></span>
             <input type="text" class="form-control" name="search_query" placeholder="Search by Name or Mobile Number" value="<?= htmlspecialchars($search_query) ?>">
-            <button type="submit" class="btn btn-primary"><i class="material-icons">search</i> Search</button>
-            <a href="service_person_performance.php" class="btn btn-secondary"><i class="material-icons">refresh</i> Reset</a>
+            <button type="submit" class="btn btn-info btn-ui text-light"><i class="material-icons">search</i> Search</button>
+            <a href="service_person_performance.php" class="btn btn-light btn-ui text-info"><i class="material-icons">refresh</i> Reset</a>
         </div>
     </form>
 
@@ -146,7 +146,7 @@ if ($complaint_id && $service_person_id) {
                         <td><?= htmlspecialchars($sp['mobile_number']) ?></td>
                         <td><?= htmlspecialchars($sp['area_of_service'] ?? 'N/A') ?></td>
                         <td>
-                            <a href="?service_person_id=<?= $sp['id'] ?>" class="btn btn-sm btn-info view-performance" title="View Performance">
+                            <a href="?service_person_id=<?= $sp['id'] ?>" class="btn btn-sm btn-info view-performance text-light" title="View Performance">
                                 <i class="material-icons">assessment</i>
                             </a>
                         </td>
@@ -174,7 +174,7 @@ if ($complaint_id && $service_person_id) {
                     <input type="date" class="form-control" name="to_date" value="<?= $to_date ?>">
                 </div>
                 <div class="col-md-4 align-self-end">
-                    <button type="submit" class="btn btn-primary"><i class="material-icons">filter_list</i> Filter</button>
+                    <button type="submit" class="btn btn-info btn-ui text-light"><i class="material-icons">filter_list</i> Filter</button>
                 </div>
             </div>
         </form>
@@ -228,7 +228,7 @@ if ($complaint_id && $service_person_id) {
                             <td><?= $complaint['resolution_time_hours'] ?? 'N/A' ?></td>
                             <td><?= $complaint['resolution_time_days'] ?? 'N/A' ?></td>
                             <td>
-                                <a href="?service_person_id=<?= $service_person_id ?>&complaint_id=<?= $complaint['id'] ?>" class="btn btn-sm btn-info view-details" title="View Details">
+                                <a href="?service_person_id=<?= $service_person_id ?>&complaint_id=<?= $complaint['id'] ?>" class="btn btn-sm btn-info view-details text-light" title="View Details">
                                     <i class="material-icons">visibility</i>
                                 </a>
                             </td>
@@ -358,4 +358,4 @@ if ($complaint_id && $service_person_id) {
     });
 </script>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

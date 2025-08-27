@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/config/db.php';
+include __DIR__ . '/../config/db.php';
 session_start();
 // if (!in_array($_SESSION['role'], ['admin', 'coordinator'])) {
 //     header('Location: login.php');
@@ -116,7 +116,7 @@ $stmt->execute($params);
 $complaintsSearch = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<?php include __DIR__ . '/includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 <!-- Add DataTables and Chart.js CSS/JS -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
@@ -128,8 +128,8 @@ $complaintsSearch = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="input-group">
             <span class="input-group-text"><i class="material-icons">search</i></span>
             <input type="text" id="search" name="search" class="form-control" placeholder="Search by status, customer, or product..." value="<?= htmlspecialchars($search) ?>">
-            <button type="submit" class="btn btn-primary"><i class="material-icons">search</i> Search</button>
-            <a href="complaint_trends.php" class="btn btn-secondary"><i class="material-icons">refresh</i> Reset</a>
+            <button type="submit" class="btn btn-info btn-ui text-light"><i class="material-icons">search</i> Search</button>
+            <a href="complaint_trends.php" class="btn btn-light btn-ui text-info"><i class="material-icons">refresh</i> Reset</a>
         </div>
     </form>
 
@@ -376,4 +376,4 @@ $complaintsSearch = $stmt->fetchAll(PDO::FETCH_ASSOC);
     });
 </script>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

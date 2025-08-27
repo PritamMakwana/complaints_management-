@@ -23,6 +23,23 @@ $complaints = $stmt->fetchAll();
 ?>
 
 <?php include __DIR__ . '/../includes/header.php'; ?>
+
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?= $_SESSION['success']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['success']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
 <h2>Service Person Dashboard</h2>
 <table class="table table-datatable table-striped">
     <thead>
@@ -43,7 +60,7 @@ $complaints = $stmt->fetchAll();
                 <td><?= $complaint['product_name'] ?></td>
                 <td><?= $complaint['status'] ?></td>
                 <td><?= $complaint['coordinator_remark'] ?></td>
-                <td><a href="../service_person/service_update.php?id=<?= $complaint['id'] ?>" class="btn btn-sm btn-info"><i class="material-icons">edit</i> Update</a></td>
+                <td><a href="../service_person/service_update.php?id=<?= $complaint['id'] ?>" class="btn btn-sm btn-info btn-ui text-light w-50"><i class="material-icons me-1">edit</i><b>Update</b></a></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

@@ -23,6 +23,23 @@ $complaints = $stmt->fetchAll();
 ?>
 
 <?php include  __DIR__ . '/../includes/header.php'; ?>
+
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?= $_SESSION['success']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['success']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
 <h2>Coordinator Dashboard</h2>
 
 <!-- Status Filter -->
@@ -57,8 +74,8 @@ $complaints = $stmt->fetchAll();
                 <td><?= htmlspecialchars($complaint['created_at']) ?></td>
                 <td>
                     <a href="../coordinator/complaint_details.php?id=<?= $complaint['id'] ?>"
-                        class="btn btn-sm btn-info text-light">
-                        <i class="material-icons me-2">edit</i> Edit
+                        class="btn btn-sm btn-info text-light btn-ui w-50">
+                        <i class="material-icons me-2">edit</i><b>Edit</b>
                     </a>
                 </td>
             </tr>

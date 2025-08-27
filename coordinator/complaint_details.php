@@ -10,13 +10,14 @@ session_start();
 
 $id = $_GET['id'] ?? 0;
 if (!$id) {
+    $_SESSION['error'] = "Invalid complaint request. Complaint ID is missing.";
     header('Location: ../coordinator/dashboard.php');
     exit;
 }
 
 // Fetch complaint details
 $complaint_stmt = $pdo->prepare("SELECT c.*, cu.name as customer_name, cu.mobile_number, cu.city, cu.state, cu.address, 
-                                 cd.service_needed, cd.free_spare_parts_needed, cd.paid_spare_parts_needed, cd.num_of_coolers, cd.coordinator_remark 
+                                 cd.service_needed, cd.free_spare_parts_needed, cd.paid_spare_parts_needed, cd.num_of_coolers, cd.coordinator_remark,cd.complaint_id
                                  FROM complaints c 
                                  LEFT JOIN customers cu ON c.customer_id = cu.id 
                                  LEFT JOIN complaint_details cd ON c.id = cd.complaint_id 
@@ -25,10 +26,10 @@ $complaint_stmt->execute([$id]);
 $complaint = $complaint_stmt->fetch();
 
 if (!$complaint) {
+    $_SESSION['error'] = "Complaint not found or may have been deleted.";
     header('Location: ../coordinator/dashboard.php');
     exit;
 }
-
 // Fetch service persons
 $sp_stmt = $pdo->query("SELECT id, name FROM service_persons WHERE is_available = TRUE");
 $service_persons = $sp_stmt->fetchAll();
@@ -43,6 +44,7 @@ $spare_stmt->execute([$id]);
 $spare_parts = $spare_stmt->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     // Update customer if needed
     $name = $_POST['name'] ?? $complaint['customer_name'];
     $city = $_POST['city'] ?? $complaint['city'];
@@ -58,7 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $num_coolers = $_POST['num_of_coolers'] ?? 1;
     $remark = $_POST['coordinator_remark'] ?? null;
 
-    if ($complaint['complaint_id']) { // complaint_details id is null if not exists
+
+    if (isset($complaint['complaint_id'])) { // complaint_details id is null if not exists
         $update_cd = $pdo->prepare("UPDATE complaint_details SET service_needed = ?, free_spare_parts_needed = ?, paid_spare_parts_needed = ?, num_of_coolers = ?, coordinator_remark = ? WHERE complaint_id = ?");
         $update_cd->execute([$service_needed, $free_sp, $paid_sp, $num_coolers, $remark, $id]);
     } else {
@@ -87,6 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if ($service_person_id) {
+        $_SESSION['success'] = "Complaint assigned to service person successfully!";
+    } elseif ($sp_coord_id) {
+        $_SESSION['success'] = "Complaint assigned to spare parts coordinator!";
+    } else {
+        $_SESSION['success'] = "Complaint updated successfully!";
+    }
     header('Location: ../coordinator/dashboard.php');
     exit;
 }
@@ -153,8 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h4>Assignments</h4>
     <div class="mb-3">
         <label for="service_person_id">Assign to Service Person</label>
-        <select class="form-select" id="service_person_id" name="service_person_id">
-            <option value="">Select</option>
+        <select class="form-select" id="service_person_id" name="service_person_id" required>
+            <option value="" disabled selected>Select</option>
             <?php foreach ($service_persons as $sp): ?>
                 <option value="<?= $sp['id'] ?>" <?= $complaint['service_person_id'] == $sp['id'] ? 'selected' : '' ?>><?= $sp['name'] ?></option>
             <?php endforeach; ?>
@@ -187,9 +197,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endforeach; ?>
     </div>
-    <button type="button" id="add-part" class="btn btn-secondary mb-3 btn-ui"><i class="material-icons me-2">add</i> Add Part</button>
+    <button type="button" id="add-part" class="btn btn-secondary mb-5 btn-ui w-25"><i class="material-icons me-2">add</i><b>Add Part</b></button>
 
-    <button type="submit" class="btn btn-primary btn-ui"><i class="material-icons me-2">save</i> Save</button>
+    <button type="submit" class="btn btn-success btn-ui w-25"><i class="material-icons me-2">save</i><b>Save</b></button>
 </form>
 
 <script>
@@ -199,13 +209,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         row.classList.add('row', 'mb-2');
         row.innerHTML = `
             <div class="col-md-6">
-                <input type="text" class="form-control" name="part_name[]" placeholder="Part Name">
+                <input type="text" class="form-control" name="part_name[]" placeholder="Part Name" required>
             </div>
             <div class="col-md-4">
-                <input type="number" class="form-control" name="quantity[]" placeholder="Quantity" min="1">
+                <input type="number" class="form-control" name="quantity[]" placeholder="Quantity" min="1" required>
             </div>
             <div class="col-md-2">
-                <button type="button" class="btn btn-danger remove-part"><i class="material-icons">delete</i></button>
+                <button type="button" class="btn btn-danger remove-part">Remove</button>
             </div>
         `;
         container.appendChild(row);

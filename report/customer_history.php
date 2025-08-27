@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/config/db.php';
+include __DIR__ . '/../config/db.php';
 session_start();
 // if (!in_array($_SESSION['role'], ['admin', 'coordinator'])) {
 //     header('Location: login.php');
@@ -76,7 +76,7 @@ if ($complaint_id && $customer_id) {
 }
 ?>
 
-<?php include __DIR__ . '/includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 
 <div class="container mt-4">
     <h2>Complaint History by Customer</h2>
@@ -86,8 +86,8 @@ if ($complaint_id && $customer_id) {
         <div class="input-group">
             <span class="input-group-text"><i class="material-icons">search</i></span>
             <input type="text" class="form-control" name="search_query" placeholder="Search by Name or Mobile Number" value="<?= htmlspecialchars($search_query) ?>">
-            <button type="submit" class="btn btn-primary"><i class="material-icons">search</i> Search</button>
-            <a href="customer_histroy.php" class="btn btn-secondary"><i class="material-icons">refresh</i> Reset</a>
+            <button type="submit" class="btn btn-info btn-ui text-light"><i class="material-icons">search</i> Search</button>
+            <a href="customer_history.php" class="btn btn-light btn-ui text-info"><i class="material-icons">refresh</i> Reset</a>
         </div>
     </form>
 
@@ -115,7 +115,7 @@ if ($complaint_id && $customer_id) {
                         <td><?= htmlspecialchars($customer['state'] ?? 'N/A') ?></td>
                         <td>
                             <a href="?customer_id=<?= $customer['id'] ?>" class="btn btn-sm btn-info view-complaints" title="View Complaints">
-                                <i class="material-icons">history</i>
+                                <i class="material-icons text-light">history</i>
                             </a>
                         </td>
                     </tr>
@@ -156,7 +156,7 @@ if ($complaint_id && $customer_id) {
                         <td><?= $complaint['closed_at'] ?? 'N/A' ?></td>
                         <td>
                             <a href="?customer_id=<?= $customer_id ?>&complaint_id=<?= $complaint['id'] ?>" class="btn btn-sm btn-info view-details" title="View Details">
-                                <i class="material-icons">visibility</i>
+                                <i class="material-icons text-light">visibility</i>
                             </a>
                         </td>
                     </tr>
@@ -239,4 +239,4 @@ if ($complaint_id && $customer_id) {
     <?php endif; ?>
 </div>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

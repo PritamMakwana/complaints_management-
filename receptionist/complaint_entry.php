@@ -125,14 +125,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="description" class="form-label">Remark</label>
         <textarea class="form-control" id="description" name="description"></textarea>
     </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-12 col-lg-12">
-            <button type="submit" class="btn btn-secondary btn-ui"><i class="material-icons me-2">save</i>Complaint Submit</button>
-        </div>
-    </div>
+    <button type="submit" class="btn btn-success btn-ui w-25"><i class="material-icons me-2">save</i><b>Complaint Submit</b></button>
 </form>
 
 <script>
+    // if mobile number is valid, enable other fields
+    const mobileInput = document.getElementById('mobile_number');
+    const otherFields = [
+        document.getElementById('name'),
+        document.getElementById('city'),
+        document.getElementById('state'),
+        document.getElementById('product_name'),
+        document.getElementById('description')
+    ];
+
+    // Disable all fields initially
+    otherFields.forEach(field => field.disabled = true);
+
+    // Enable/disable on input
+    mobileInput.addEventListener('input', function() {
+        if (/^[0-9]{10}$/.test(this.value.trim())) {
+            otherFields.forEach(field => field.disabled = false);
+        } else {
+            otherFields.forEach(field => {
+                field.value = ''; // optional: clear values
+                field.disabled = true;
+            });
+        }
+    });
+
     // Autofill on mobile change
     document.getElementById('mobile_number').addEventListener('blur', function() {
         if (this.value.length == 10) {

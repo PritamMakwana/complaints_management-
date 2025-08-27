@@ -9,6 +9,7 @@ session_start();
 
 $id = $_GET['id'] ?? 0;
 if (!$id) {
+    $_SESSION['error'] = "Invalid complaint request. Complaint ID is missing.";
     header('Location: ../spare_parts/dashboard.php');
     exit;
 }
@@ -18,11 +19,17 @@ $spare_stmt->execute([$id]);
 $spare_parts = $spare_stmt->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    foreach ($_POST['status'] as $part_id => $status) {
-        $courier = $_POST['courier_details'][$part_id] ?? null;
-        $update = $pdo->prepare("UPDATE spare_parts_list SET status = ?, courier_details = ? WHERE id = ?");
-        $update->execute([$status, $courier, $part_id]);
+    try {
+        foreach ($_POST['status'] as $part_id => $status) {
+            $courier = $_POST['courier_details'][$part_id] ?? null;
+            $update = $pdo->prepare("UPDATE spare_parts_list SET status = ?, courier_details = ? WHERE id = ?");
+            $update->execute([$status, $courier, $part_id]);
+        }
+        $_SESSION['success'] = "Spare parts updated successfully!";
+    } catch (Exception $e) {
+        $_SESSION['error'] = "Error updating spare parts: " . $e->getMessage();
     }
+
     header('Location: ../spare_parts/dashboard.php');
     exit;
 }
@@ -46,6 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea class="form-control" name="courier_details[<?= $part['id'] ?>]"><?= $part['courier_details'] ?></textarea>
         </div>
     <?php endforeach; ?>
-    <button type="submit" class="btn btn-primary"><i class="material-icons">save</i> Update</button>
+    <button type="submit" class="btn btn-success btn-ui w-25"><i class="material-icons me-2">save</i><b>Update</b></button>
 </form>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

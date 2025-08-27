@@ -9,7 +9,7 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="assets/styles.css" rel="stylesheet">
+    <link href="../assets/styles.css" rel="stylesheet">
 </head>
 
 <body>
@@ -39,6 +39,9 @@
                     </li>
                     <li>
                         <a class="nav-link" href="../service_person/dashboard.php">Service Person</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="../report/dashboard.php">Report</a>
                     </li>
                 </ul>
             </div>

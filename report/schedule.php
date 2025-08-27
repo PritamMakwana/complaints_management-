@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/config/db.php';
+include __DIR__ . '/../config/db.php';
 session_start();
 // if (!in_array($_SESSION['role'], ['admin', 'coordinator'])) {
 //     header('Location: login.php');
@@ -126,36 +126,9 @@ $chart_stmt = $pdo->prepare("
 ");
 $chart_stmt->execute($params);
 $chart_data = $chart_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Handle CSV export
-if (isset($_GET['export'])) {
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment;filename="schedule_' . $from_date . '_to_' . $to_date . '.csv"');
-    $output = fopen('php://output', 'w');
-    fputcsv($output, ['Date', 'Service Person', 'Complaint ID', 'Customer', 'Product', 'Status', 'Created At', 'Closed At', 'Description', 'Closing Remark', 'Resolution Time (Hours)']);
-    
-    foreach ($complaints as $complaint) {
-        fputcsv($output, [
-            $complaint['complaint_date'],
-            $complaint['service_person_name'] ?? 'N/A',
-            $complaint['id'],
-            $complaint['customer_name'] ?? 'N/A',
-            $complaint['product_name'] ?? 'N/A',
-            $complaint['status'],
-            $complaint['created_at'],
-            $complaint['closed_at'] ?? 'N/A',
-            $complaint['description'] ?? 'N/A',
-            $complaint['closing_remark'] ?? 'N/A',
-            $complaint['resolution_time_hours'] ?? 'N/A'
-        ]);
-    }
-    
-    fclose($output);
-    exit;
-}
 ?>
 
-<?php include __DIR__ . '/includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 <!-- Add DataTables and Chart.js CSS/JS -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
@@ -193,8 +166,7 @@ if (isset($_GET['export'])) {
                 </select>
             </div>
             <div class="col-md-2 align-self-end">
-                <button type="submit" class="btn btn-primary"><i class="material-icons">filter_list</i> Filter</button>
-                <a href="?export=1&from_date=<?= htmlspecialchars($from_date) ?>&to_date=<?= htmlspecialchars($to_date) ?>" class="btn btn-success"><i class="material-icons">download</i> Export</a>
+                <button type="submit" class="btn btn-info btn-ui text-light"><i class="material-icons">filter_list</i> Filter</button>
             </div>
         </div>
     </form>
@@ -351,4 +323,4 @@ $(document).ready(function() {
 });
 </script>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
