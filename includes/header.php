@@ -12,7 +12,7 @@
     <link href="../assets/styles.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="mb-3">
 
     <!-- loading page -->
     <div id="LoadSpinnerAll" class="custom-loader-overlay">
